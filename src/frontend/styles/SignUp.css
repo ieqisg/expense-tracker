@@ -1,0 +1,97 @@
+body {
+    width: auto;
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    background-color: #a78cde;
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    position: relative;
+    
+}
+
+.sign-up-container {
+    float: right;
+    margin-top: 100px;
+    width: 50%;
+    height: 30rem;
+}
+
+.sign-up {
+    position: relative;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: black;
+    font-size: 25px;
+}
+
+.left {
+    height: 100vh;
+    width: 40%;
+    background-color: rgb(3, 3, 33);
+    background-image: url(./assets/logo.png);
+    background-repeat: no-repeat;
+    background-size: 50rem;
+    background-position: center;
+    border-right: black;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    width: 35rem;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: black;
+}
+
+.form-input {
+    width: 100%;
+    height: 3rem;
+    border-radius: 5px;
+    border-style: hidden;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: large;
+    
+}
+
+.button {
+    height: 50px;
+    width: 100px;
+    border-radius: 10px;
+    border-style: none;
+    position: relative;
+    top: 20px;
+    background-color: rgb(51, 8, 108);
+    font-weight: 700;
+    font-style: normal;
+    position: relative;
+    color: white;
+}
+
+.button:hover{
+    background-color: rgb(6, 176, 29);
+     transition: background-color 0.5s ease;
+}
+
