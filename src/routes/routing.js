@@ -1,19 +1,20 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import SignUp from "../frontend/SignUp";
-import Login from "../frontend/Login";
+import SignUp from "../frontend//components/SignUp";
+import Login from "../frontend/components/Login";
+import Dashboard from "../frontend/components/dashboard";
+import PrivateRoute from "../frontend/components/PrivateRoute";
 
 
-function routing() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element = {<SignUp />} />
-                <Route path="/Login" element = {<Login />} />
-            </Routes>
-        </Router>
-    )
-}
-
-export default routing;
+export const router = createBrowserRouter([
+    {path: "/", element: <SignUp />},
+    {path: "/Login", element: <Login />},
+    
+    {path: "/Dashboard", element: (
+    <PrivateRoute>
+        <Dashboard />
+    </PrivateRoute>
+    ) 
+    }
+])

@@ -73,6 +73,7 @@ body {
     font-weight: 700;
     font-style: normal;
     font-size: large;
+    position: relative;
     
 }
 
@@ -93,5 +94,55 @@ body {
 .button:hover{
     background-color: rgb(6, 176, 29);
      transition: background-color 0.5s ease;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Update your existing .form-input to add padding for the button */
+.form-input {
+    width: 100%;
+    height: 3rem;
+    border-radius: 5px;
+    border-style: hidden;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: large;
+    position: relative;
+}
+
+/* Add padding-right specifically for password inputs */
+.password-container .form-input {
+    padding-right: 50px; /* Make room for the button */
+}
+
+/* Update your existing .showpass styles */
+.showpass {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.showpass:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
 }
 
