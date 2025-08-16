@@ -16,9 +16,13 @@ function Dashboard() {
     }
 
     return (
-        <div>
-        <h1>Tite</h1>
-        <button onClick={handleSignout}>Log out</button>
+        <div className="min-h-screen bg-gray-50 p-5 font-oswald">
+        <h1 className="text-4xl font-bold text-gray-800 mb-5">Dashboard</h1>
+        <button 
+            onClick={handleSignout}
+            className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded cursor-pointer font-semibold transition-colors duration-300">
+            Log out
+        </button>
         </div>
     )
 }
