@@ -44,9 +44,14 @@ export function Confirm({setCurrentStep}) {
     }, [])
 
     const handleSubmit = async (e) => {
-        const formdata = {firstname, lastname, date, monthlyIncome, sourceIncome}
+        const formdata = {firstname, lastname, date, monthlyIncome: Number(monthlyIncome), sourceIncome}
         try {
-            await axios.post("http://localhost:5000/api/details", formdata)
+            const response = await axios.post("http://localhost:5001/api/details", formdata)
+            localStorage.removeItem("firstname")
+            localStorage.removeItem("lastname")
+            localStorage.removeItem("date")
+            localStorage.removeItem("monthlyIncome")
+            localStorage.removeItem("sourceIncome")
         } catch (error) {
             console.error(error)
             

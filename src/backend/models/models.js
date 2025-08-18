@@ -19,7 +19,7 @@ const userDetails = mongoose.Schema(
         },
 
         monthlyIncome: {
-            type: String,
+            type: Number,
             required: true
         },
 
