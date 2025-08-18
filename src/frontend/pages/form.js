@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Income } from '../forms/income';
 import { User } from '../forms/user';
-import { Expenses } from '../forms/expenses';
+import { Confirm } from '../forms/confirm';
+
 
 
 function Form() {
@@ -9,6 +10,7 @@ function Form() {
     const [currentStep, setCurrentStep] = useState(1)
 
     let content;
+    
 
     switch (currentStep) {
       case 1:
@@ -18,16 +20,18 @@ function Form() {
         content = <Income setCurrentStep={setCurrentStep} />
         break
       case 3:
-        content = <Expenses setCurrentStep={setCurrentStep} />
+        content = <Confirm setCurrentStep={setCurrentStep} />
+      
 
     }
       
 
   return (
-    
+  <div>
     <div>
       {content}
     </div>
+  </div>  
   );
 }
 

@@ -28,7 +28,7 @@ export function Income({setCurrentStep}) {
     localStorage.setItem("sourceIncome", sourceIncome)
   }, [monthlyIncome, sourceIncome])
 
-
+  
   const handleNext = (e) => {
     e.preventDefault()
     setCurrentStep((prev) => prev+1)
@@ -40,13 +40,20 @@ export function Income({setCurrentStep}) {
   }
 
     return (
-        <div className="min-h-screen bg-red-500 flex justify-center items-center">
+    <div className="min-h-screen bg-[#090040] flex justify-center items-center">
+      <div className="text-white absolute top-14 flex inline-block gap-20">
+        <h1 className="flex items-center justify-center bg-green-500 h-10 w-10 rounded-full">1</h1>
+        <h1 className="flex items-center justify-center bg-green-500 h-10 w-10 rounded-full">2</h1>
+        <h1 className="flex items-center justify-center bg-red-500 h-10 w-10 rounded-full">3</h1>
+        <h1 className="text-white absolute top-[60px] left-[6.5rem] text-3xl" >Income:</h1>
+      </div>
+      
       <form 
-      className="bg-white p-6 rounded-2xl shadow-lg flex flex-col gap-4 w-96"
+      className="bg-[#471396] p-6 rounded-2xl shadow-lg flex flex-col gap-4 w-96"
       onSubmit={handleNext}
        >
         <div className="flex flex-col">
-          <label className="mb-1 font-semibold">Monthly Income:</label>
+          <label className="mb-1 font-semibold text-white">Monthly Income:</label>
           <div className="flex items-center gap-2">
             <input
               
@@ -67,7 +74,7 @@ export function Income({setCurrentStep}) {
         </div>
 
         <div className="flex flex-col">
-          <label  className="mb-1 font-semibold">Source of Income:</label>
+          <label  className="mb-1 font-semibold text-white">Source of Income:</label>
           <input
               value={sourceIncome}
               onChange={(e) => setSourceIncome(e.target.value)}
@@ -82,13 +89,13 @@ export function Income({setCurrentStep}) {
         <div className="flex items-center justify-center gap-20"  > 
             <button 
             onClick={handlePrev}
-            className="bg-red-500 text-white font-semibold py-2 rounded-lg hover:bg-red-600 w-[200px]">
+            className="bg-[#B13BFF] hover:bg-green-500 text-white font-semibold py-2 rounded-lg w-[200px]">
             Previous
             </button>
             
             <button 
             type="submit"
-            className="bg-red-500 text-white font-semibold py-2 rounded-lg hover:bg-red-600 w-[200px]">
+            className="bg-[#B13BFF] hover:bg-green-500 text-white font-semibold py-2 rounded-lg w-[200px]">
             Next
             </button>
 
