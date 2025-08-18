@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import axios from "axios"
 
 
 
@@ -42,10 +43,20 @@ export function Confirm({setCurrentStep}) {
 
     }, [])
 
+    const handleSubmit = async (e) => {
+        const formdata = {firstname, lastname, date, monthlyIncome, sourceIncome}
+        try {
+            await axios.post("http://localhost:5000/api/details", formdata)
+        } catch (error) {
+            console.error(error)
+            
+        }
+    
+    }
+
     const handleconfirm = (e) => {
         e.preventDefault()
         setPopup(true)
-        console.log(popup)
     }
 
     const handleCancelPopup = () => {
@@ -121,7 +132,7 @@ export function Confirm({setCurrentStep}) {
                 <h2 className="text-xl font-bold mb-4">Confirm Submission?</h2>
                 <div className="flex justify-end gap-5">
                     <button onClick={handleCancelPopup} >Cancel</button>
-                    <button>Submit</button>
+                    <button onClick={handleSubmit}>Submit</button>
                 </div>
                 </div>  
 
