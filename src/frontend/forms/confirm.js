@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 export function Confirm({ setCurrentStep }) {
-    const [username, setUsername] = useState("")
+  const [username, setUsername] = useState("");
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [date, setDate] = useState("");
@@ -11,10 +12,12 @@ export function Confirm({ setCurrentStep }) {
   const [sourceIncome, setSourceIncome] = useState("");
   const [popup, setPopup] = useState(false);
   const [popupSubmitted, setPopupSubmitted] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  
 
   useEffect(() => {
-    const savedUsername = localStorage.getItem("username")
+    const savedUsername = localStorage.getItem("username");
     const savedfirstname = localStorage.getItem("firstname");
     const savedlastname = localStorage.getItem("lastname");
     const saveddate = localStorage.getItem("date");
@@ -22,7 +25,7 @@ export function Confirm({ setCurrentStep }) {
     const savedsourceIncome = localStorage.getItem("sourceIncome");
 
     if (savedUsername) {
-        setUsername(savedUsername)
+      setUsername(savedUsername);
     }
 
     if (savedfirstname) {
@@ -48,7 +51,7 @@ export function Confirm({ setCurrentStep }) {
 
   const handleSubmit = async (e) => {
     const formdata = {
-        username,
+      username,
       firstname,
       lastname,
       date,
@@ -68,11 +71,14 @@ export function Confirm({ setCurrentStep }) {
       localStorage.removeItem("sourceIncome");
       setPopupSubmitted(true);
       setTimeout(() => setPopupSubmitted(false), 3000);
-      setTimeout(() => navigate('/Dashboard'), 3200)
+      setTimeout(() => navigate("/Dashboard"), 3200);
       setPopup(false);
+
     } catch (error) {
-      console.error(error);
+      console.log("error:", error)
     }
+      
+    
   };
 
   const handleconfirm = (e) => {
@@ -86,8 +92,10 @@ export function Confirm({ setCurrentStep }) {
 
   const handleNext = (e) => {
     e.preventDefault();
-    setCurrentStep((prev) => prev + 1);
-  };
+   
+      
+    }
+  
 
   const handlePrev = (e) => {
     e.preventDefault();
@@ -115,10 +123,10 @@ export function Confirm({ setCurrentStep }) {
         onSubmit={handleNext}
       >
         <div className="flex flex-col gap-3 text-lg">
-           <div className="flex justify-between">
+          <div className="flex justify-between">
             <span>Username:</span>
             <span className="text-[#F97A00]">{username}</span>
-          </div>  
+          </div>
           <div className="flex justify-between">
             <span>First Name:</span>
             <span className="text-[#F97A00]">{firstname}</span>

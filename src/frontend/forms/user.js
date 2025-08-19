@@ -1,4 +1,5 @@
 import { use, useEffect, useState } from "react"
+import axios from "axios"
 
 
 
@@ -10,10 +11,23 @@ export function User({setCurrentStep}) {
     const [lastname, setLastName] = useState("")
     const [date, setDate] = useState("")
 
-    const handleNext = (e) => {
+    const [usernameError, setUsernameError] = useState(false)
+    
+
+    const handleNext = async (e) => {
         e.preventDefault()
-        setCurrentStep((prev) => prev+1)
-        console.log(setCurrentStep)
+        
+        try {
+          const response = await axios.get('http://localhost:5001/api/details/exist', {params: {username}})
+          if (response.data && response.data.exists) {
+            console.log("username already exists")
+            return
+          }
+          setCurrentStep((prev) => prev + 1)
+        } catch (error) {
+          console.error(error)
+        }
+        
     }
 
     useEffect(() => {

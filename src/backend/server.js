@@ -7,9 +7,28 @@ const userDetails = require('./models/models.js')
 app.use(express.json())
 app.use(cors())
 
+
+
 app.get("/", (req, res) => {
   console.log("server is running on port 3000");
 });
+
+app.get('/api/details/exist', async (req, res) => {
+  try {
+    const { username } = req.query
+    
+    if(!username) {
+      return res.status(400).json({message: "username query is required"})
+    }
+    const existUsername = await userDetails.exists({ username })
+    return res.status(200).json({exists: !!existUsername})
+
+  } catch (error) {
+    return res.status(500).json({message})
+    
+    
+  }
+})
 
 app.post('/api/details', async (req,res) => {
     try {
