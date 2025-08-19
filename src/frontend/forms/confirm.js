@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export function Confirm({ setCurrentStep }) {
+    const [username, setUsername] = useState("")
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [date, setDate] = useState("");
@@ -13,11 +14,16 @@ export function Confirm({ setCurrentStep }) {
   const navigate = useNavigate()
 
   useEffect(() => {
+    const savedUsername = localStorage.getItem("username")
     const savedfirstname = localStorage.getItem("firstname");
     const savedlastname = localStorage.getItem("lastname");
     const saveddate = localStorage.getItem("date");
     const savedmonthlyIncome = localStorage.getItem("monthlyIncome");
     const savedsourceIncome = localStorage.getItem("sourceIncome");
+
+    if (savedUsername) {
+        setUsername(savedUsername)
+    }
 
     if (savedfirstname) {
       setFirstName(savedfirstname);
@@ -42,6 +48,7 @@ export function Confirm({ setCurrentStep }) {
 
   const handleSubmit = async (e) => {
     const formdata = {
+        username,
       firstname,
       lastname,
       date,
@@ -53,6 +60,7 @@ export function Confirm({ setCurrentStep }) {
         "http://localhost:5001/api/details",
         formdata
       );
+      localStorage.removeItem("username");
       localStorage.removeItem("firstname");
       localStorage.removeItem("lastname");
       localStorage.removeItem("date");
@@ -107,6 +115,10 @@ export function Confirm({ setCurrentStep }) {
         onSubmit={handleNext}
       >
         <div className="flex flex-col gap-3 text-lg">
+           <div className="flex justify-between">
+            <span>Username:</span>
+            <span className="text-[#F97A00]">{username}</span>
+          </div>  
           <div className="flex justify-between">
             <span>First Name:</span>
             <span className="text-[#F97A00]">{firstname}</span>

@@ -5,7 +5,7 @@ import { use, useEffect, useState } from "react"
 export function User({setCurrentStep}) {
 
     
-    
+    const [username, setUsername] = useState("")
     const [firstname, setFirstName] = useState("")
     const [lastname, setLastName] = useState("")
     const [date, setDate] = useState("")
@@ -20,6 +20,10 @@ export function User({setCurrentStep}) {
         const savedfirstname = localStorage.getItem("firstname")
         const savedlastname = localStorage.getItem("lastname")
         const saveddate = localStorage.getItem("date")
+        const savedUsername = localStorage.getItem("username")
+        if (savedUsername) {
+            setUsername(savedUsername)
+        }
         if (savedfirstname) {
             setFirstName(savedfirstname)
         }
@@ -29,13 +33,15 @@ export function User({setCurrentStep}) {
         if (saveddate) {
             setDate(saveddate)
         }
+        
     }, [])
 
     useEffect(() => {
         localStorage.setItem("firstname", firstname)
         localStorage.setItem("lastname", lastname)
         localStorage.setItem("date", date)
-    }, [firstname, lastname, date])
+        localStorage.setItem("username", username)
+    }, [firstname, lastname, date, username])
 
 
   
@@ -51,10 +57,27 @@ export function User({setCurrentStep}) {
       </div>
       
       <form 
-      className="bg-[#471396] p-6 rounded-2xl shadow-lg flex flex-col gap-5 w-96 text-white"
+      className="bg-[#471396] p-6 rounded-2xl shadow-lg flex flex-col gap-5 w-96 text-white mt-16"
       onSubmit={handleNext}
        >
-        <div className="flex items-center justify-start gap-5">
+
+        <div className="flex items-center justify-start gap-4">
+          
+          <label className="mb-1 font-semibold ">Username:</label>
+          <div className="flex items-center w-[500px]">
+            <input
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
+                className="flex-1 border rounded-lg p-2 text-black"
+                type="text"
+                placeholder="Enter your username"
+                required
+            />
+
+          </div>
+        </div>
+
+        <div className="flex items-center justify-start gap-11">
           
           <label className="mb-1 font-semibold ">First name:</label>
           <div className="flex items-center w-[500px]">
@@ -70,7 +93,7 @@ export function User({setCurrentStep}) {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-5">
+        <div className="flex items-center justify-center gap-11">
           <label className="mb-1 font-semibold ">Last name:</label>
           <div className="flex items-center w-[500px]">
             <input
@@ -85,7 +108,7 @@ export function User({setCurrentStep}) {
           </div>
         </div>
         
-       <div className="flex items-center justify-center gap-6">
+       <div className="flex items-center justify-center gap-12">
           <label className="mb-1 font-semibold ">Date:</label>
           <div className="flex items-center w-[500px]">
             <input

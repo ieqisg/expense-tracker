@@ -1,8 +1,14 @@
 
+const { type } = require('@testing-library/user-event/dist/type');
 const mongoose = require('mongoose')
 
 const userDetails = mongoose.Schema(
     {
+        username: {
+            type: String,
+            required: true
+        },
+
         firstname: {
             type: String,
             required: true
