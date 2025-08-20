@@ -2,7 +2,8 @@
 const { type } = require('@testing-library/user-event/dist/type');
 const mongoose = require('mongoose')
 
-const userDetails = mongoose.Schema(
+
+const userDetails = mongoose.Schema( // creates a schema
     {
         username: {
             type: String,
@@ -39,4 +40,4 @@ const userDetails = mongoose.Schema(
 )   
     const details = mongoose.model("details", userDetails)
 
-    module.exports = details;
+    module.exports = details; 

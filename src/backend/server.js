@@ -1,30 +1,31 @@
-const mongoose = require("mongoose");
-const express = require("express");
-const app = express();
-const cors = require('cors')
-const userDetails = require('./models/models.js')
+const mongoose = require("mongoose"); //mongodb connection 
+const express = require("express"); // makes it easy to build APIs and web servers.
+const app = express(); // define routes
+const cors = require('cors') // allows communication from frontend to backend
+const userDetails = require('./models/models.js') // import user details from model
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json()) // This middleware tells Express to automatically parse JSON request bodies. 
+app.use(cors())  // allows communication from frontend to backend
 
 
-
+// test if server is running 
 app.get("/", (req, res) => {
   console.log("server is running on port 3000");
 });
 
+//route/endpoint
 app.get('/api/details/exist', async (req, res) => {
   try {
-    const { username } = req.query
+    const { username } = req.query // take the inputted username 
     
-    if(!username) {
+    if(!username) { // if no username return bad request "username query is required"
       return res.status(400).json({message: "username query is required"})
     }
-    const existUsername = await userDetails.exists({ username })
-    return res.status(200).json({exists: !!existUsername})
+    const existUsername = await userDetails.exists({ username }) // checks if the username already exists in the database
+    return res.status(200).json({exists: !!existUsername}) // return true if username already exists
 
   } catch (error) {
-    return res.status(500).json({message})
+    return res.status(500).json({message}) // internal server error
     
     
   }
@@ -32,13 +33,16 @@ app.get('/api/details/exist', async (req, res) => {
 
 app.post('/api/details', async (req,res) => {
     try {
-        const user_details = await userDetails.create(req.body)
-        res.status(200).json(user_details)
+        
+        const user_details = await userDetails.create(req.body) // saves new data in the database
+        res.status(200).json(user_details) // return ok
     } catch (error) {
         res.status(500).json({message: error.message})
     }
 })
 
+
+// connect to database
 mongoose
   .connect(
     "mongodb+srv://marctamayo027:9FVNBhvQ8kBfTR6p@database.7znl0ce.mongodb.net/Node-API?retryWrites=true&w=majority&appName=Database"

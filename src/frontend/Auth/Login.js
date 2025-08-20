@@ -11,7 +11,7 @@ function Login() {
   const navigate = useNavigate()
 
   const { session, loginNewUser } = UserAuth();
-  console.log(session)
+  
 
   const handleLogin = async(e) => {
     e.preventDefault();
@@ -81,7 +81,7 @@ function Login() {
                 </div>
               </div>
               <button className="h-12 w-full max-w-lg rounded-lg border-0 bg-green-500 font-bold text-black cursor-pointer font-oswald mt-3 hover:bg-purple-800 transition-colors duration-500" type="submit">Log In</button>
-              <p className="text-sm mt-8">Don't have an Account? <Link className="text-red-500" to="/">Sign Up Here</Link></p>
+              <p className="text-sm mt-8">Don't have an Account? <Link className="text-red-500" to="/Signup">Sign Up Here</Link></p>
             </div>
           </form>
         </div> 

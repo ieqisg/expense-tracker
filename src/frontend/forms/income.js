@@ -40,16 +40,16 @@ export function Income({setCurrentStep}) {
   }
 
     return (
-    <div className="min-h-screen bg-[#090040] flex justify-center items-center">
+    <div className="min-h-screen bg-[#F7F7F7] flex justify-center items-center">
       <div className="text-white absolute top-14 flex inline-block gap-20">
-        <h1 className="flex items-center justify-center bg-green-500 h-10 w-10 rounded-full">1</h1>
-        <h1 className="flex items-center justify-center bg-green-500 h-10 w-10 rounded-full">2</h1>
+        <h1 className="flex items-center justify-center bg-[#6C48C5] h-10 w-10 rounded-full">1</h1>
+        <h1 className="flex items-center justify-center bg-[#6C48C5]   h-10 w-10 rounded-full">2</h1>
         <h1 className="flex items-center justify-center bg-red-500 h-10 w-10 rounded-full">3</h1>
-        <h1 className="text-white absolute top-[60px] left-[6.5rem] text-3xl" >Income:</h1>
+        <h1 className="text-black absolute top-[60px] left-[6.5rem] text-3xl" >Income:</h1>
       </div>
       
       <form 
-      className="bg-[#471396] p-6 rounded-2xl shadow-lg flex flex-col gap-4 w-96"
+      className="bg-[#273F4F] p-6 rounded-2xl shadow-lg flex flex-col gap-4 w-96"
       onSubmit={handleNext}
        >
         <div className="flex flex-col">
@@ -89,13 +89,13 @@ export function Income({setCurrentStep}) {
         <div className="flex items-center justify-center gap-20"  > 
             <button 
             onClick={handlePrev}
-            className="bg-[#B13BFF] hover:bg-green-500 text-white font-semibold py-2 rounded-lg w-[200px]">
+            className="bg-red-500 text-white font-semibold py-2 rounded-lg w-[200px]">
             Previous
             </button>
             
             <button 
             type="submit"
-            className="bg-[#B13BFF] hover:bg-green-500 text-white font-semibold py-2 rounded-lg w-[200px]">
+            className="bg-green-500 text-white font-semibold py-2 rounded-lg w-[200px]">
             Next
             </button>
 

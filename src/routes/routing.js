@@ -9,8 +9,8 @@ import Form from "../frontend/pages/form";
 
 
 export const router = createBrowserRouter([
-    {path: "/", element: <SignUp />},
-    {path: "/Login", element: <Login />},
+    {path: "/", element: <Login />},
+    {path: "/Signup", element: <SignUp />},
     
     
     {path: "/Dashboard", element: (
