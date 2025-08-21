@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../Auth/AuthContext";
 
 
 export function Confirm({ setCurrentStep }) {
@@ -12,6 +13,7 @@ export function Confirm({ setCurrentStep }) {
   const [sourceIncome, setSourceIncome] = useState("");
   const [popup, setPopup] = useState(false);
   const [popupSubmitted, setPopupSubmitted] = useState(false);
+  const { session } = UserAuth()
   const navigate = useNavigate();
 
   
@@ -52,6 +54,7 @@ export function Confirm({ setCurrentStep }) {
 
   const handleSubmit = async (e) => {
     const formdata = {
+      authUserId: session?.user?.id,
       username,
       firstname,
       lastname,

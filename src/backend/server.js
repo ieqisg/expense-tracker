@@ -25,7 +25,7 @@ app.get('/api/details/exist', async (req, res) => {
     return res.status(200).json({exists: !!existUsername}) // return true if username already exists
 
   } catch (error) {
-    return res.status(500).json({message}) // internal server error
+    return res.status(500).json({message: error}) // internal server error
     
     
   }
@@ -40,6 +40,21 @@ app.post('/api/details', async (req,res) => {
         res.status(500).json({message: error.message})
     }
 })
+
+app.get('/api/details/me', async (req,res) => {
+  try {
+    const { authUserId } = req.query
+
+    if (!authUserId) { return res.status(400).json({message: "AuthuserId is required"})}
+    const details = await userDetails.findOne( { authUserId })
+    if (!details) { return res.status(404).json({message: "Details not found"})}
+    return res.status(200).json(details)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+
 
 
 // connect to database

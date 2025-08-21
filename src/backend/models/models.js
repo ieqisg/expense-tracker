@@ -5,6 +5,11 @@ const mongoose = require('mongoose')
 
 const userDetails = mongoose.Schema( // creates a schema
     {
+        authUserId: {
+            type: String,
+            required: false,
+            unique: true
+        },
         username: {
             type: String,
             required: true,
