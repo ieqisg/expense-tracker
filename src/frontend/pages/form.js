@@ -5,6 +5,7 @@ import { Confirm } from '../forms/confirm';
 
 
 
+
 function Form() {
 
     const [currentStep, setCurrentStep] = useState(1)
@@ -31,6 +32,7 @@ function Form() {
     <div>
       {content}
     </div>
+    
   </div>  
   );
 }

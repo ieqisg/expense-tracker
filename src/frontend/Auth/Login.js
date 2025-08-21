@@ -21,7 +21,7 @@ function Login() {
       const result = await loginNewUser(email, password)
 
       if (result.success) {
-        navigate('/Dashboard')
+        navigate('/HomePage')
       }
     } catch (err) {
       setError("an error occured")

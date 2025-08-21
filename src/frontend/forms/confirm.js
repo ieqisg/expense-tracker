@@ -75,7 +75,7 @@ export function Confirm({ setCurrentStep }) {
       localStorage.removeItem("sourceIncome");
       setPopupSubmitted(true);
       setTimeout(() => setPopupSubmitted(false), 3000);
-      setTimeout(() => navigate("/Dashboard"), 3200);
+      setTimeout(() => navigate("/HomePage"), 3200);
       setPopup(false);
 
     } catch (error) {
