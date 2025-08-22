@@ -10,7 +10,7 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const { session, loginNewUser } = UserAuth();
+  const { session, loginNewUser, jwt } = UserAuth();
   
 
   const handleLogin = async(e) => {
@@ -22,7 +22,10 @@ function Login() {
 
       if (result.success) {
         navigate('/HomePage')
+        
       }
+      
+      
     } catch (err) {
       setError("an error occured")
 

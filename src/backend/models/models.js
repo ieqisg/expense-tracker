@@ -7,7 +7,7 @@ const userDetails = mongoose.Schema( // creates a schema
     {
         authUserId: {
             type: String,
-            required: false,
+            required: true,
             unique: true
         },
         username: {
@@ -40,6 +40,30 @@ const userDetails = mongoose.Schema( // creates a schema
             type: String,
             required: true
         },
+
+        transactions: [
+            {
+                type: {
+                    type: String,
+                    enum: ["Income", "Expenses"],
+                    required: true
+                },
+                category: {
+                    type: String,
+                    enum: ["Salary", "Gift", "Business", "Freelance", "Investment", "Bills & Utilities", "Food", "Grocery", "Transportation", "Education", "Shopping", "Travel", "Other"],
+                    required: true
+                },
+                amount: {
+                    type: Number,
+                    required: true
+                },
+                description: {
+                    type: String,
+                    required: false
+                }
+            }
+        ], 
+        default: []
     }
 
 )   

@@ -7,6 +7,3 @@ export function Button({ className = "", children, ...props }) {
         </button>
     );
 }
-
-
-

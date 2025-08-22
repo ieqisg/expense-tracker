@@ -4,12 +4,16 @@ import React from "react";
 export const Dialog = DialogPrimitive.Root;
 export const DialogTrigger = DialogPrimitive.Trigger;
 export const DialogClose = DialogPrimitive.Close;
+export const DialogOverlay = DialogPrimitive.Overlay;
 
 export function DialogContent({ className = "", children, ...props }) {
     return (
-        <DialogPrimitive.Content className={`fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow ${className}`} {...props}>
-            {children}
-        </DialogPrimitive.Content>
+        <>
+            <DialogOverlay className="fixed inset-0 z-40 bg-black/50 dialog-overlay" />
+            <DialogPrimitive.Content className={`fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-6 shadow dialog-content ${className}`} {...props}>
+                {children}
+            </DialogPrimitive.Content>
+        </>
     );
 }
 
@@ -44,6 +48,3 @@ export function DialogFooter({ className = "", children, ...props }) {
         </div>
     );
 }
-
-
-

@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../Auth/AuthContext";
 
-
 export function Confirm({ setCurrentStep }) {
   const [username, setUsername] = useState("");
   const [firstname, setFirstName] = useState("");
@@ -13,10 +12,8 @@ export function Confirm({ setCurrentStep }) {
   const [sourceIncome, setSourceIncome] = useState("");
   const [popup, setPopup] = useState(false);
   const [popupSubmitted, setPopupSubmitted] = useState(false);
-  const { session } = UserAuth()
+  const { session } = UserAuth();
   const navigate = useNavigate();
-
-  
 
   useEffect(() => {
     //saves the data into localstorage
@@ -77,12 +74,9 @@ export function Confirm({ setCurrentStep }) {
       setTimeout(() => setPopupSubmitted(false), 3000);
       setTimeout(() => navigate("/HomePage"), 3200);
       setPopup(false);
-
     } catch (error) {
-      console.log("error:", error)
+      console.log("error:", error);
     }
-      
-    
   };
 
   const handleconfirm = (e) => {
@@ -96,10 +90,7 @@ export function Confirm({ setCurrentStep }) {
 
   const handleNext = (e) => {
     e.preventDefault();
-   
-      
-    }
-  
+  };
 
   const handlePrev = (e) => {
     e.preventDefault();

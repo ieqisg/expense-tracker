@@ -2,7 +2,8 @@ const mongoose = require("mongoose"); //mongodb connection
 const express = require("express"); // makes it easy to build APIs and web servers.
 const app = express(); // define routes
 const cors = require('cors') // allows communication from frontend to backend
-const userDetails = require('./models/models.js') // import user details from model
+const userDetails = require('./models/models.js'); // import user details from model
+const { type } = require("@testing-library/user-event/dist/type/index.js");
 
 app.use(express.json()) // This middleware tells Express to automatically parse JSON request bodies. 
 app.use(cors())  // allows communication from frontend to backend
@@ -31,6 +32,8 @@ app.get('/api/details/exist', async (req, res) => {
   }
 })
 
+
+
 app.post('/api/details', async (req,res) => {
     try {
         
@@ -49,10 +52,40 @@ app.get('/api/details/me', async (req,res) => {
     const details = await userDetails.findOne( { authUserId })
     if (!details) { return res.status(404).json({message: "Details not found"})}
     return res.status(200).json(details)
+    
   } catch (error) {
     console.error(error)
   }
+
 })
+
+app.patch('/api/transactions/:authUserId', async (req,res) => {
+  try {
+    const { authUserId } = req.params
+    if(!authUserId) return res.status(400).json({message: "AuthuserId is required"})
+    
+    const { type, category, amount, description } = req.body
+
+    if (!type || !category || !amount) {
+            return res.status(400).json({ error: "type, category, and amount are required" });
+        }
+    const newTransaction = { type, category, amount, description }
+
+    const user_transaction = await userDetails.findOneAndUpdate(
+      { authUserId: authUserId},
+      {$push: {transactions: newTransaction}},
+      {new: true}
+    )
+
+    if(!user_transaction) {
+      res.status(404).json({message: "User not found"})
+    }
+    res.status(200).json(user_transaction)
+  } catch (error) {
+      console.error(error)
+  }
+})
+
 
 
 
