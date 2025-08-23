@@ -67,12 +67,12 @@ app.patch('/api/transactions/:authUserId', async (req,res) => {
     const { authUserId } = req.params
     if(!authUserId) return res.status(400).json({message: "AuthuserId is required"})
     
-    const { type, category, amount, description } = req.body
+    const { type, category, amount, description, transactionDate } = req.body
 
-    if (!type || !category || !amount) {
+    if (!type || !category || !amount || !transactionDate) {
             return res.status(400).json({ error: "type, category, and amount are required" });
         }
-    const newTransaction = { type, category, amount, description }
+    const newTransaction = { type, category, amount, description, transactionDate }
 
     const user_transaction = await userDetails.findOneAndUpdate(
       { authUserId: authUserId},

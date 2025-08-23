@@ -60,7 +60,12 @@ const userDetails = mongoose.Schema( // creates a schema
                 description: {
                     type: String,
                     required: false
+                },
+                transactionDate: {
+                    type: String,
+                    required: false
                 }
+            
             }
         ], 
         default: []

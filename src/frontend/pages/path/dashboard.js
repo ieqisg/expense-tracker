@@ -43,6 +43,8 @@ export function Dashboard() {
   const [totalIncome, setTotalIncome] = useState();
   const [totalExpenses, setTotalExpenses] = useState();
   const [balance, setBalance] = useState(0);
+  
+  
 
   const [formData, setFormData] = useState({
     transactionType: "",
@@ -96,22 +98,36 @@ export function Dashboard() {
       0
     );
     const totalBalance = monthlyIncome + sumIncome - sumExpenses;
+
+    
     setBalance(totalBalance);
     setTotalIncome(sumIncome);
     setTotalExpenses(sumExpenses.toLocaleString());
-    console.log(balance, typeof balance);
+
+    
+
+    
+    
+
+    
+    
   }, [transactions, monthlyIncome]);
 
   // update the transactions in the data when new transaction is added
   const handleFormSubmit = async () => {
     setPopupTransaction(false);
 
+    const currentDate = new Date().toLocaleString();
+    console.log(currentDate)
+    
     try {
       const payload = {
         type: formData.transactionType,
         category: formData.category,
         amount: formData.amount,
         description: formData.description,
+        transactionDate: currentDate
+        
       };
 
       const response = await axios.patch(
@@ -123,14 +139,7 @@ export function Dashboard() {
     }
   };
 
-  // const handleFormChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: name === "amount" ? Number(value) : value,
-  //   }));
-  // };
+  
 
   const handleSignout = async () => {
     try {
@@ -146,6 +155,7 @@ export function Dashboard() {
       <div className="flex justify-between items-center text-3xl">
         <div className="flex items-center gap-4">
           <h1 className="hidden sm:block">Dashboard</h1>
+          <h1 className="hidden sm:block"></h1>
           
         </div>
         <Button onClick={handleSignout}>Logout</Button>
@@ -342,6 +352,9 @@ export function Dashboard() {
                             <Badge variant="secondary" className="text-xs">
                               {item.category}
                             </Badge>
+                            <p className="text-sm text-gray-500">{new Date(item.transactionDate).toLocaleDateString()}</p>
+                            <p className="text-sm text-gray-500">{new Date(item.transactionDate).toLocaleTimeString()}</p>
+                            <h1></h1>
                           </div>
                         </div>
                       </div>
