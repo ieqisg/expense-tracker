@@ -33,17 +33,19 @@ app.get('/api/details/exist', async (req, res) => {
 })
 
 
-
+// saves user details in the database
 app.post('/api/details', async (req,res) => {
     try {
         
-        const user_details = await userDetails.create(req.body) // saves new data in the database
+        const user_details = await userDetails.create(req.body) 
         res.status(200).json(user_details) // return ok
     } catch (error) {
         res.status(500).json({message: error.message})
     }
 })
 
+
+//fetch user data that matches the authUserId
 app.get('/api/details/me', async (req,res) => {
   try {
     const { authUserId } = req.query
@@ -52,6 +54,7 @@ app.get('/api/details/me', async (req,res) => {
     const details = await userDetails.findOne( { authUserId })
     if (!details) { return res.status(404).json({message: "Details not found"})}
     return res.status(200).json(details)
+    
     
   } catch (error) {
     console.error(error)

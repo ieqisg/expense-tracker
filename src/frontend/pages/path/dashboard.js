@@ -1,7 +1,9 @@
 import { Link, Navigate } from "react-router-dom";
 import { UserAuth } from "../../Auth/AuthContext";
-import { useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Button } from "../../../components/ui/button";
+import { Badge } from "../../../components/ui/badge";
+import { Separator } from "../../../components/ui/separator";
 import {
   Dialog,
   DialogClose,
@@ -38,9 +40,9 @@ export function Dashboard() {
   const { session, signOut } = UserAuth();
   const [user, setUser] = useState(null);
   const [popoupTransaction, setPopupTransaction] = useState(false);
+  const [totalIncome, setTotalIncome] = useState();
   const [totalExpenses, setTotalExpenses] = useState();
-  const [balance, setBalance] = useState()
-  const [differenceBalance, setDifferenceBalance] = useState()
+  const [balance, setBalance] = useState(0);
 
   const [formData, setFormData] = useState({
     transactionType: "",
@@ -54,10 +56,12 @@ export function Dashboard() {
   const monthlyIncome = user?.monthlyIncome ?? 0;
   const transactions = user?.transactions ?? [];
   const authUserId = user?.authUserId ?? "";
+  const monthlyIncomeString = monthlyIncome + totalIncome;
 
   useEffect(() => {
     if (!session) return;
-    
+
+    // fetch users data from the database that matches the authUserId
     const fetchDetails = async () => {
       try {
         const { data } = await axios.get(
@@ -67,7 +71,6 @@ export function Dashboard() {
           }
         );
         setUser(data);
-        
       } catch (error) {
         console.error(error);
       }
@@ -76,18 +79,31 @@ export function Dashboard() {
   }, [session]);
 
   useEffect(() => {
-    const amounts = transactions.map((tx) => tx.amount);
-    const sum = amounts.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    setTotalExpenses(sum.toLocaleString())
+    const incomeAmount = transactions
+      .filter((tx) => tx.type === "Income")
+      .map((tx) => tx.amount);
 
-    const difference = monthlyIncome - sum
-    setBalance(difference.toLocaleString())
-    setDifferenceBalance(difference)
-  }, [transactions], [monthlyIncome]);
-  
+    const expensesAmount = transactions
+      .filter((tx) => tx.type === "Expenses")
+      .map((tx) => tx.amount);
 
+    const sumIncome = incomeAmount.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    const sumExpenses = expensesAmount.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    );
+    const totalBalance = monthlyIncome + sumIncome - sumExpenses;
+    setBalance(totalBalance);
+    setTotalIncome(sumIncome);
+    setTotalExpenses(sumExpenses.toLocaleString());
+    console.log(balance, typeof balance);
+  }, [transactions, monthlyIncome]);
+
+  // update the transactions in the data when new transaction is added
   const handleFormSubmit = async () => {
-    
     setPopupTransaction(false);
 
     try {
@@ -107,14 +123,14 @@ export function Dashboard() {
     }
   };
 
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
+  // const handleFormChange = (e) => {
+  //   const { name, value } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "amount" ? Number(value) : value,
-    }));
-  };
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: name === "amount" ? Number(value) : value,
+  //   }));
+  // };
 
   const handleSignout = async () => {
     try {
@@ -127,8 +143,11 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-400 p-5">
-      <div className="flex justify-between text-3xl  ">
-        <h1 className="hidden sm:block">Dashboard</h1>
+      <div className="flex justify-between items-center text-3xl">
+        <div className="flex items-center gap-4">
+          <h1 className="hidden sm:block">Dashboard</h1>
+          
+        </div>
         <Button onClick={handleSignout}>Logout</Button>
         <h1>Welcome, {name} </h1>
         <Dialog open={popoupTransaction} onOpenChange={setPopupTransaction}>
@@ -223,7 +242,8 @@ export function Dashboard() {
             </form>
           </DialogContent>
         </Dialog>
-      </div>
+  </div>
+  <Separator />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 mb-6">
         <Card className="">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -232,7 +252,7 @@ export function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              <h1>₱{monthlyIncome.toLocaleString()}</h1>
+              <h1>₱{monthlyIncomeString.toLocaleString()}</h1>
             </div>
             <p className="text-xs text-muted-foreground">
               Source of Income: {sourceIncome}
@@ -263,12 +283,12 @@ export function Dashboard() {
           <CardContent>
             <div
               className={
-                differenceBalance > 0
+                balance > 0
                   ? "text-2xl font-bold text-green-600"
                   : "text-2xl font-bold text-red-600"
               }
             >
-              <h1>₱{balance}</h1>
+              <h1>₱{balance.toLocaleString()}</h1>
             </div>
             <p className="text-xs text-muted-foreground">Tite</p>
           </CardContent>
@@ -296,18 +316,64 @@ export function Dashboard() {
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <ul>
-              {transactions.map((item, index) => (
-                <div key={index}>
-                  <li>{item.type}</li>
-                  <li>{item.category}</li>
-                  <li>₱{item.amount.toLocaleString()}</li>
-                  <li>{item.description}</li>
-                  <hr className="" />
-                </div>
-              ))}
-            </ul>
-            <p className="text-xs text-muted-foreground"></p>
+            {transactions.length > 0 ? (
+              <div className="space-y-4">
+                {transactions.map((item, index) => (
+                  <div key={index}>
+                    <div className="flex items-center justify-between">
+                      {/* Left side: Icon + details */}
+                      <div className="flex items-center space-x-3">
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            item.type === "Income"
+                              ? "bg-green-100"
+                              : "bg-red-100"
+                          }`}
+                        >
+                          {item.type === "Income" ? (
+                            <TrendingUp className="w-5 h-5 text-green-600" />
+                          ) : (
+                            <TrendingDown className="w-5 h-5 text-red-600" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-medium">{item.description}</p>
+                          <div className="flex items-center space-x-2">
+                            <Badge variant="secondary" className="text-xs">
+                              {item.category}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right side: Amount */}
+                      <div
+                        className={`font-bold ${
+                          item.type === "Income"
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {item.type === "Income" ? "+" : "-"}₱
+                        {item.amount.toLocaleString()}
+                      </div>
+                    </div>
+
+                    {/* Separator except for the last item */}
+                    {index < transactions.length - 1 && (
+                      <Separator className="mt-4" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-gray-500 py-8">
+                <p>No transactions yet</p>
+                <p className="text-sm">
+                  Add your first transaction to get started
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
