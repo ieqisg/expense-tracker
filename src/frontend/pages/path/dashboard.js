@@ -30,6 +30,18 @@ import {
 } from "../../../components/ui/card";
 import { TrendingDown, TrendingUp, PlusCircle, Trash2 } from "lucide-react";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../../../components/ui/alert-dialog/index";
+
 export function Dashboard() {
   const [error, setError] = useState("");
   const { session, signOut } = UserAuth();
@@ -38,6 +50,7 @@ export function Dashboard() {
   const [totalIncome, setTotalIncome] = useState();
   const [totalExpenses, setTotalExpenses] = useState();
   const [balance, setBalance] = useState(0);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const [formData, setFormData] = useState({
     transactionType: "",
@@ -155,10 +168,15 @@ export function Dashboard() {
         "http://localhost:5001/api/transactions/" + authUserId
       );
       setUser((prev) => ({ ...prev, transactions: [] }));
+      
     } catch (error) {
       console.error(error);
     }
   };
+
+  const handleConfirmDelete = () => {
+    setConfirmDelete(true);
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-5">
@@ -297,13 +315,13 @@ export function Dashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-lg font-medium">Balance: </CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
+            {balance > 0 ? <TrendingUp  className="h-4 w-4 text-green-600"/> : <TrendingDown className="h-4 w-4 text-red-600"/>}
           </CardHeader>
           <CardContent>
             <div
               className={
                 balance > 0
-                  ? "text-2xl font-bold text-green-600"
+                  ? "text-2xl font-bold text-green-600" 
                   : "text-2xl font-bold text-red-600"
               }
             >
@@ -332,7 +350,10 @@ export function Dashboard() {
             <CardTitle className="text-lg font-medium">
               Recent Transactions
             </CardTitle>
-            <Button onClick={() => deleteAllTransaction(authUserId)} className="flex items-center gap-2">
+            <Button
+              onClick={handleConfirmDelete}
+              className="flex items-center gap-2"
+            >
               <Trash2 />
               Delete All Transactions
             </Button>
@@ -416,6 +437,22 @@ export function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <AlertDialog open={confirmDelete} onOpenChange={setConfirmDelete}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              transactions.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() =>deleteAllTransaction(authUserId)}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
