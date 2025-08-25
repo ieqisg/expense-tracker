@@ -62,6 +62,7 @@ app.get('/api/details/me', async (req,res) => {
 
 })
 
+//add transactions to database
 app.patch('/api/transactions/:authUserId', async (req,res) => {
   try {
     const { authUserId } = req.params
@@ -84,6 +85,23 @@ app.patch('/api/transactions/:authUserId', async (req,res) => {
       res.status(404).json({message: "User not found"})
     }
     res.status(200).json(user_transaction)
+  } catch (error) {
+      console.error(error)
+  }
+})
+
+// delete transaction one by one
+app.delete('/api/transactions/:authUserId/:transactionId', async (req,res) => {
+  
+  const { authUserId, transactionId} = req.params
+  try {
+    const user = await userDetails.findOneAndUpdate(
+      { authUserId},
+      {$pull: {transactions: { _id: transactionId } } },
+      {new:true}
+    )
+    res.json(user)
+    
   } catch (error) {
       console.error(error)
   }

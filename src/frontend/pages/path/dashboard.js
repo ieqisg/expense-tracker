@@ -6,10 +6,7 @@ import { Badge } from "../../../components/ui/badge";
 import { Separator } from "../../../components/ui/separator";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -22,8 +19,6 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectGroup,
-  SelectLabel,
 } from "../../../components/ui/select";
 
 import axios from "axios";
@@ -33,7 +28,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../components/ui/card";
-import { TrendingDown, TrendingUp, PlusCircle } from "lucide-react";
+import { TrendingDown, TrendingUp, PlusCircle, Trash2 } from "lucide-react";
 
 export function Dashboard() {
   const [error, setError] = useState("");
@@ -43,8 +38,6 @@ export function Dashboard() {
   const [totalIncome, setTotalIncome] = useState();
   const [totalExpenses, setTotalExpenses] = useState();
   const [balance, setBalance] = useState(0);
-  
-  
 
   const [formData, setFormData] = useState({
     transactionType: "",
@@ -99,35 +92,22 @@ export function Dashboard() {
     );
     const totalBalance = monthlyIncome + sumIncome - sumExpenses;
 
-    
     setBalance(totalBalance);
     setTotalIncome(sumIncome);
     setTotalExpenses(sumExpenses.toLocaleString());
-
-    
-
-    
-    
-
-    
-    
   }, [transactions, monthlyIncome]);
 
   // update the transactions in the data when new transaction is added
   const handleFormSubmit = async () => {
     setPopupTransaction(false);
-
     const currentDate = new Date().toLocaleString();
-    console.log(currentDate)
-    
     try {
       const payload = {
         type: formData.transactionType,
         category: formData.category,
         amount: formData.amount,
         description: formData.description,
-        transactionDate: currentDate
-        
+        transactionDate: currentDate,
       };
 
       const response = await axios.patch(
@@ -139,8 +119,6 @@ export function Dashboard() {
     }
   };
 
-  
-
   const handleSignout = async () => {
     try {
       await signOut();
@@ -150,13 +128,33 @@ export function Dashboard() {
     }
   };
 
+  const handleDeleteTransaction = async (authUserId, transactionId) => {
+    try {
+      await axios.delete(
+        "http://localhost:5001/api/transactions/" +
+          authUserId +
+          "/" +
+          transactionId
+      );
+      setUser(function (prev) {
+        return {
+          ...prev,
+          transactions: prev.transactions.filter(function (tx) {
+            return tx._id !== transactionId;
+          }),
+        };
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-400 p-5">
+    <div className="min-h-screen bg-gray-100 p-5">
       <div className="flex justify-between items-center text-3xl">
         <div className="flex items-center gap-4">
           <h1 className="hidden sm:block">Dashboard</h1>
           <h1 className="hidden sm:block"></h1>
-          
         </div>
         <Button onClick={handleSignout}>Logout</Button>
         <h1>Welcome, {name} </h1>
@@ -252,8 +250,8 @@ export function Dashboard() {
             </form>
           </DialogContent>
         </Dialog>
-  </div>
-  <Separator />
+      </div>
+      <Separator />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 mb-6">
         <Card className="">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -352,8 +350,16 @@ export function Dashboard() {
                             <Badge variant="secondary" className="text-xs">
                               {item.category}
                             </Badge>
-                            <p className="text-sm text-gray-500">{new Date(item.transactionDate).toLocaleDateString()}</p>
-                            <p className="text-sm text-gray-500">{new Date(item.transactionDate).toLocaleTimeString()}</p>
+                            <p className="text-sm text-gray-500">
+                              {new Date(
+                                item.transactionDate
+                              ).toLocaleDateString()}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {new Date(
+                                item.transactionDate
+                              ).toLocaleTimeString()}
+                            </p>
                             <h1></h1>
                           </div>
                         </div>
@@ -361,7 +367,7 @@ export function Dashboard() {
 
                       {/* Right side: Amount */}
                       <div
-                        className={`font-bold ${
+                        className={`font-bold flex items-center gap-3 ${
                           item.type === "Income"
                             ? "text-green-600"
                             : "text-red-600"
@@ -369,6 +375,12 @@ export function Dashboard() {
                       >
                         {item.type === "Income" ? "+" : "-"}₱
                         {item.amount.toLocaleString()}
+                        <Trash2
+                          onClick={() =>
+                            handleDeleteTransaction(authUserId, item._id)
+                          }
+                          className="hover:cursor-pointer"
+                        ></Trash2>
                       </div>
                     </div>
 
