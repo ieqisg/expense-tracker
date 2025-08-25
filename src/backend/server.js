@@ -107,7 +107,19 @@ app.delete('/api/transactions/:authUserId/:transactionId', async (req,res) => {
   }
 })
 
-
+app.delete('/api/transactions/:authUserId', async (req,res) => {
+  const { authUserId } = req.params
+  try {
+    const updatedUser = await userDetails.findOneAndUpdate(
+      { authUserId },
+      {$set: {transactions: []}},
+      {new: true}
+    )
+    res.json(updatedUser)
+  } catch (error) {
+      console.error(error)
+  }
+})
 
 
 

@@ -149,6 +149,17 @@ export function Dashboard() {
     }
   };
 
+  const deleteAllTransaction = async (authUserId) => {
+    try {
+      await axios.delete(
+        "http://localhost:5001/api/transactions/" + authUserId
+      );
+      setUser((prev) => ({ ...prev, transactions: [] }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-5">
       <div className="flex justify-between items-center text-3xl">
@@ -321,7 +332,10 @@ export function Dashboard() {
             <CardTitle className="text-lg font-medium">
               Recent Transactions
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
+            <Button onClick={() => deleteAllTransaction(authUserId)} className="flex items-center gap-2">
+              <Trash2 />
+              Delete All Transactions
+            </Button>
           </CardHeader>
           <CardContent>
             {transactions.length > 0 ? (
